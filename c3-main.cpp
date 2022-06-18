@@ -52,7 +52,7 @@ std::chrono::time_point<std::chrono::system_clock> currentTime;
 vector<ControlState> cs;
 
 // // Declare the function for ICP algo
-Eigen::Matrix4d ICP(PointCloudT::Ptr target, PointCloudT::Ptr source, Pose startingPose, int iterations){
+Eigen::Matrix4d ICP(PointCloudT::Ptr target, PointCloudT::Ptr source, Pose startingPose){
 
   	Eigen::Matrix4d transformation_matrix = Eigen::Matrix4d::Identity ();
 
@@ -62,10 +62,11 @@ Eigen::Matrix4d ICP(PointCloudT::Ptr target, PointCloudT::Ptr source, Pose start
   	pcl::transformPointCloud (*source, *transformSource, initTransform);
   	
    pcl::IterativeClosestPoint<PointT, PointT> icp;
-  	icp.setMaximumIterations (iterations);
+  	icp.setMaximumIterations (100);
   	icp.setInputSource (transformSource);
   	icp.setInputTarget (target);
-	icp.setMaxCorrespondenceDistance (2);
+  	icp.setTransformationEpsilon(1e-8); 
+// 	icp.setMaxCorrespondenceDistance (2);
   
    PointCloudT::Ptr cloud_icp (new PointCloudT);  // ICP output point cloud
   	icp.align (*cloud_icp);
@@ -283,9 +284,9 @@ int main(){
 			//pose = ....
         
         // Use ICP
-			//Eigen::Matrix4d transform = ICP(mapCloud, cloudFiltered, pose, 4); 
+// 			Eigen::Matrix4d transform = ICP(mapCloud, cloudFiltered, pose); 
         // Use NDT
-         Eigen::Matrix4d transform = NDT(mapCloud, cloudFiltered, pose);          
+        Eigen::Matrix4d transform = NDT(mapCloud, cloudFiltered, pose);          
         pose = getPose(transform);
 			// TODO: Transform scan so it aligns with ego's actual pose and render that scan
 	  		PointCloudT::Ptr corrected_scan (new PointCloudT);
