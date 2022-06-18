@@ -1,4 +1,4 @@
-# udacity-nd013-c4-localisation-starter
+# nd013-c3-localisation-starter
 
 This project is finished in workspace VM.
 
