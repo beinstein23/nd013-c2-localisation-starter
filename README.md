@@ -30,10 +30,10 @@ Run the executable program:
 
 ## Result
 
-### Using ICP algorighm
+### Using ICP algorithm
 ![img1](images/result_icp.png)
 
-### Using NDT algorighm
+### Using NDT algorithm
 ![img1](images/result_ndt.png)
 
 Remark:
